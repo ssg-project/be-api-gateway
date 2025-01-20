@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from jose import JWTError, jwt
 import os
+import re
 from typing import List
 from dotenv import load_dotenv
 from redis import Redis
@@ -11,7 +12,9 @@ load_dotenv()
 
 PUBLIC_PATHS = [
     "/user/api/v1/auth/login",
-    "/user/api/v1/auth/join"
+    "/user/api/v1/auth/join",
+    "/event/api/v1/concert/list",
+    r"/event/api/v1/concert/\d+"
 ]
 
 class AuthMiddleware(BaseHTTPMiddleware):
@@ -30,7 +33,13 @@ class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         path = request.url.path
         
-        if path in PUBLIC_PATHS:
+        is_public = any(
+            re.match(f"^{pattern}$", path)
+            if pattern.startswith("/event/api/v1/concert/")
+            else path == pattern
+            for pattern in PUBLIC_PATHS
+        )
+        if is_public:
             return await call_next(request)
             
         try:

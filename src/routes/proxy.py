@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import StreamingResponse
 import httpx
 import os
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -18,9 +19,13 @@ async def proxy_request(request: Request, service_url: str, path: str) -> Stream
     headers = dict(request.headers)
     headers.pop("host", None)
     
+    scope = dict(request.scope)
+    
     try:
         async with httpx.AsyncClient() as client:
             body = await request.body()
+            
+            headers["X-Scope"] = json.dumps({"user": scope.get("user")})
             
             response = await client.request(
                 method=request.method,

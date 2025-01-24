@@ -11,7 +11,7 @@ from redis import Redis
 load_dotenv()
 
 PUBLIC_PATHS = [
-    "/health"
+    "/health",
     "/user/api/v1/auth/login",
     "/user/api/v1/auth/join",
     "/event/api/v1/concert/list",

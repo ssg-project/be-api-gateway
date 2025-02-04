@@ -14,8 +14,7 @@ PUBLIC_PATHS = [
     "/health",
     "/user/api/v1/auth/login",
     "/user/api/v1/auth/join",
-    "/event/api/v1/concert/list",
-    r"/event/api/v1/concert/\d+"
+    "/event/api/v1/concert/list"
 ]
 
 class AuthMiddleware(BaseHTTPMiddleware):
@@ -34,13 +33,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         path = request.url.path
         
-        is_public = any(
-            re.match(f"^{pattern}$", path)
-            if pattern.startswith("/event/api/v1/concert/")
-            else path == pattern
-            for pattern in PUBLIC_PATHS
-        )
-        if is_public:
+        if path in PUBLIC_PATHS:
             return await call_next(request)
             
         try:

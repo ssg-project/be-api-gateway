@@ -5,10 +5,8 @@ from jose import JWTError, jwt
 import os
 import re
 from typing import List
-from dotenv import load_dotenv
 from redis import Redis
 
-load_dotenv()
 
 PUBLIC_PATHS = [
     "/health",

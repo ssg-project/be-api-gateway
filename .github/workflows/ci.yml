@@ -27,7 +27,7 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         env:
-          ECR_URI: 206177862976.dkr.ecr.ap-northeast-2.amazonaws.com/ticketing/gmmt
+          ECR_URI: 206177862976.dkr.ecr.ap-northeast-2.amazonaws.com/ticketing/api-gateway
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build --platform=linux/amd64 -t $ECR_URI:$IMAGE_TAG .

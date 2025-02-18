@@ -11,7 +11,7 @@ SERVICE_ROUTES = {
     "user": os.getenv("TICKETING_USER_URL"),
     "ticketing": os.getenv("TICKETING_TICKETING_URL"),
     "event": os.getenv("TICKETING_EVENT_URL"),
-    "admin/event": os.getenv("TICKETING_EVENT_URL")
+    "admin": "http://gateway.default.svc.cluster.local:8000"
 }
 
 async def proxy_request(request: Request, service_url: str, path: str) -> StreamingResponse:

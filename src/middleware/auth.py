@@ -2,11 +2,8 @@ from fastapi import Request, HTTPException
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from jose import JWTError, jwt
-import os
-import re
-from typing import List
 from redis import Redis
-
+from config.config import REDIS_HOST, REDIS_PORT, JWT_SECRET_KEY, JWT_ALGORITHM
 
 PUBLIC_PATHS = [
     "/health",
@@ -22,8 +19,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
         super().__init__(app)
         try:
             self.redis_client = Redis(
-                host=os.getenv('REDIS_HOST'),
-                port=int(os.getenv('REDIS_PORT')),
+                host=REDIS_HOST,
+                port=REDIS_PORT,
                 db=0,
                 decode_responses=True
             )
@@ -44,8 +41,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
             token = auth_header.split(" ")[1]
             payload = jwt.decode(
                 token,
-                os.getenv("JWT_SECRET_KEY"),
-                algorithms=[os.getenv("JWT_ALGORITHM")]
+                JWT_SECRET_KEY,
+                algorithms=[JWT_ALGORITHM]
             )
             
             user_id =payload.get("user_id")

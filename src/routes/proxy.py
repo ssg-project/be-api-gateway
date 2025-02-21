@@ -1,17 +1,16 @@
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import StreamingResponse
 import httpx
-import os
 import json
-
+from config.config import TICKETING_USER_URL, TICKETING_TICKETING_URL, TICKETING_EVENT_URL, GATEWAY_URL
 
 router = APIRouter()
 
 SERVICE_ROUTES = {
-    "user": os.getenv("TICKETING_USER_URL"),
-    "ticketing": os.getenv("TICKETING_TICKETING_URL"),
-    "event": os.getenv("TICKETING_EVENT_URL"),
-    "admin": os.getenv("GATEWAY_URL"),
+    "user": TICKETING_USER_URL,
+    "ticketing": TICKETING_TICKETING_URL,
+    "event": TICKETING_EVENT_URL,
+    "admin": GATEWAY_URL,
 }
 
 async def proxy_request(request: Request, service_url: str, path: str) -> StreamingResponse:

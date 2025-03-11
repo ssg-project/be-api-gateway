@@ -11,7 +11,8 @@ PUBLIC_PATHS = [
     "/user/api/v1/auth/join",
     "/event/api/v1/concert/list",
     "/admin/event/api/v1/concert/create",
-    "/event/api/v1/concert/create"
+    "/event/api/v1/concert/create",
+    "/metrics"
 ]
 
 class AuthMiddleware(BaseHTTPMiddleware):

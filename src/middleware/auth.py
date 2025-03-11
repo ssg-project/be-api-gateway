@@ -49,7 +49,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             
             user_id =payload.get("user_id")
 
-            stored_token = self.redis_client.get(f"access_token:{user_id}")
+            stored_token = await self.redis_client.get(f"access_token:{user_id}")
 
             if not stored_token or stored_token != token:
                 raise HTTPException(status_code=401, detail="토큰이 만료되었거나 유효하지 않습니다.")

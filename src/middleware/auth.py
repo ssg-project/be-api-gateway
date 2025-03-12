@@ -2,7 +2,7 @@ from fastapi import Request, HTTPException
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from jose import JWTError, jwt
-from redis import Redis
+import aioredis
 from config.config import REDIS_HOST, REDIS_PORT, JWT_SECRET_KEY, JWT_ALGORITHM
 
 PUBLIC_PATHS = [
@@ -19,15 +19,13 @@ PUBLIC_PATHS = [
 class AuthMiddleware(BaseHTTPMiddleware):
     def __init__(self, app):
         super().__init__(app)
-        try:
-            self.redis_client = Redis(
-                host=REDIS_HOST,
-                port=REDIS_PORT,
-                db=0,
-                decode_responses=True
-            )
-        except Exception as e:
-            raise
+        self.redis_client = None
+
+    async def startup(self):
+        self.redis_client = await aioredis.create_redis_pool(
+            (REDIS_HOST, REDIS_PORT),
+            db=0
+        )
 
     async def dispatch(self, request: Request, call_next):
         path = request.url.path

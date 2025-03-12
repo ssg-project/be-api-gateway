@@ -6,3 +6,4 @@ redis==5.0.1
 python-dotenv==1.0.1
 prometheus_fastapi_instrumentator==7.0.2
 aioredis==2.0.1
+boto3==1.36.0

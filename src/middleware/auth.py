@@ -7,6 +7,7 @@ from config.config import REDIS_HOST, REDIS_PORT, JWT_SECRET_KEY, JWT_ALGORITHM
 
 PUBLIC_PATHS = [
     "/health",
+    "/admin/user/api/v1/auth/login",
     "/user/api/v1/auth/login",
     "/user/api/v1/auth/join",
     "/event/api/v1/concert/list",
